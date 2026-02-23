@@ -8,32 +8,42 @@
 
 Most applied work stops at estimation — fitting a model, reading a coefficient, moving on. This project takes a different stance: shifting the epistemological burden from *"what is the effect?"* to *"can we falsify the claim that there is no effect?"*
 
-Using the LaLonde (1986) dataset — a canonical benchmark in causal inference built from a randomized job training intervention — this analysis operationalizes the scientific method to adjudicate between competing causal narratives. The goal is not merely to produce an estimate of the Average Treatment Effect (ATE), but to stress-test that estimate against distributional assumptions and establish evidentiary rigor.
+Using the LaLonde (1986) dataset, this analysis operationalizes the scientific method to adjudicate between competing causal narratives. Rather than treating a difference in means as self-evident, every estimated effect is subjected to formal falsification — stress-tested against distributional assumptions before any conclusion is drawn.
 
 ---
 
 ## Technical Approach
 
-- **Parametric Testing (Welch's T-Test via SciPy):** Computed the ATE in real earnings between treatment and control groups. Welch's formulation was chosen over Student's T to account for unequal variances across groups — a common and consequential violation in observational economic data.
+- **Parametric Testing — Welch's T-Test (SciPy):** Estimated the Average Treatment Effect (ATE) in real 1978 earnings between treatment and control groups. The signal-to-noise ratio (T-statistic) was computed using Welch's formulation rather than Student's T, correcting for unequal group variances — a common and consequential violation in observational wage data.
 
-- **Non-Parametric Validation (Permutation Test, 10,000 resamples via SciPy):** To guard against conclusions inflated by distributional assumptions — earnings data is characteristically right-skewed and non-normal — a permutation test was run to empirically construct the null distribution. This provides a model-free confirmation of the parametric result.
+- **Non-Parametric Validation — Permutation Test, 10,000 resamples (SciPy):** Earnings distributions are characteristically right-skewed and non-normal. A permutation test was run to empirically construct the null distribution without relying on parametric assumptions, providing a model-free cross-check on the T-test result.
 
-- **Type I Error Discipline:** A pre-specified significance threshold (α = 0.05) was set prior to testing. Both methods were evaluated against this threshold, not retrofitted to it — a meaningful distinction that separates rigorous inference from p-hacking.
+- **Type I Error Control:** A significance threshold of α = 0.05 was pre-specified before any testing was conducted. Both methods were held to this threshold rather than retrofitted to results — the distinction between confirmatory inference and p-hacking.
 
-**Key Result:** Both methods converge on a statistically significant lift in real earnings of approximately **$1,795**, rejecting the null hypothesis of zero treatment effect.
+**Key Results:**
+
+| Metric | Value |
+|---|---|
+| Treatment Effect (ATE) | -$635.03 |
+| T-Statistic | -0.9377 |
+| T-Test P-Value | 0.3491 |
+| Permutation P-Value | 0.3370 |
+| Decision (α = 0.05) | Fail to Reject Null Hypothesis |
+
+Both methods converge on the same conclusion: the observed earnings differential between treated and control groups is not statistically significant. The tight agreement between parametric and non-parametric p-values (0.3491 vs. 0.3370) confirms the result is stable across methodological assumptions.
 
 ---
 
 ## Business Insight: Hypothesis Testing as the Safety Valve of the Algorithmic Economy
 
-At scale, the danger isn't that models are wrong — it's that they're *convincingly wrong*. With enough features, enough cuts of the data, and enough computational horsepower, a sufficiently motivated analyst can surface a statistically impressive result for almost any hypothesis. This is data dredging, and it's endemic.
+At scale, the danger isn't that models are wrong — it's that they're *convincingly wrong*. With enough features, enough slices of the data, and enough compute, a sufficiently motivated analyst can surface a statistically impressive result for almost any hypothesis. This is data dredging, and in production environments it's endemic.
 
-Rigorous hypothesis testing — with pre-registered thresholds, distributional validation, and non-parametric cross-checks — is the institutional check against this failure mode. It enforces a separation between exploration and confirmation, and it's what makes the difference between a model that *fits the past* and one that *generalizes to the future*.
+Rigorous hypothesis testing is the institutional check against this failure mode. Pre-registered thresholds, distributional validation, and non-parametric cross-checks enforce a hard separation between exploration and confirmation. This project illustrates the point directly: a raw comparison of group means might invite a narrative, but putting that narrative through formal falsification changes the conclusion entirely.
 
-In production environments, where model outputs drive hiring decisions, credit allocations, or resource interventions, a spurious correlation isn't just an academic error. It's an operational liability. Falsification-first methodology is how you build systems that hold up under scrutiny — from regulators, from stakeholders, and from reality.
+A non-finding reported honestly is more defensible — and more valuable — than a spurious positive. In environments where model outputs inform hiring, credit, or resource allocation decisions, that distinction isn't academic. It's an operational and regulatory liability. Falsification-first methodology is how you build systems that hold up under scrutiny.
 
 ---
 
 ## Stack
 
-`Python` · `SciPy` · `Pandas` · `NumPy`
+`Python` · `SciPy` · `Pandas` · `NumPy` · `Matplotlib` · `Seaborn`
