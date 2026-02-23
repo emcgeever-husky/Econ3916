@@ -14,7 +14,7 @@ This portfolio follows a **Concept Extension** approach:
 
 The goal is to understand not just *how* algorithms work, but *when* and *why* to use them in economic contexts.
 
-## 🧠 Industry Perspective: Decision Thresholds as Business Parameters
+## ⚖️ Industry Perspective: Decision Thresholds as Business Parameters
 In academic settings, the p < 0.05 threshold is treated as a universal convention — but in industry, decision thresholds are business parameters calibrated to the cost of being wrong. A tech firm running thousands of A/B tests simultaneously can't apply a fixed significance cutoff uniformly; the acceptable error rate shifts depending on the stakes of the decision, the revenue impact of a false positive, and the opportunity cost of delaying a rollout. This means statistical significance is a necessary but insufficient condition for action — a result can be "significant" and still not worth shipping, or marginally insignificant and still worth the bet. Understanding that α is a lever, not a law, is what separates analysts who report numbers from those who inform decisions.
 
 ## 🛠️ Tech Stack
